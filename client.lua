@@ -86,6 +86,8 @@ function IsRadioOn()
     return onRadio
 end
 
+exports("IsRadioOn", IsRadioOn)
+
 -- NUI
 RegisterNUICallback('joinRadio', function(data, cb)
     local rchannel = tonumber(data.channel)
