@@ -96,7 +96,7 @@ RegisterNUICallback('joinRadio', function(data, cb)
             if rchannel ~= RadioChannel then
                 if rchannel <= Config.RestrictedChannels then
                     local xPlayer = QBCore.Functions.GetPlayerData()
-                    if (xPlayer.job.name == 'police' or xPlayer.job.name == 'ems' or xPlayer.job.name == 'doctor') and xPlayer.job.onduty then
+                    if (xPlayer.job.name == 'police' or xPlayer.job.name == 'ambulance') and xPlayer.job.onduty then
                         connecttoradio(rchannel)
                     else
                         QBCore.Functions.Notify(Config.messages['restricted_channel_error'], 'error')
