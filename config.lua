@@ -4,6 +4,12 @@ Config.RestrictedChannels = 10 -- channels that are encrypted (EMS, Fire and pol
 
 Config.MaxFrequency = 500
 
+-- jobs that are allowed to be on Restricted channels
+Config.AllowedJobs = {
+  ['police'] = true,
+  ['ambulance'] = true
+}
+
 Config.messages = {
   ['not_on_radio'] = 'Your not connected to a signal',
   ['on_radio'] = 'Your already connected to this signal',

@@ -17,3 +17,13 @@ QBCore.Functions.CreateCallback('qb-radio:server:GetItem', function(source, cb, 
         cb(false)
     end
 end)
+
+for i = 1, Config.RestrictedChannels do 
+    exports['pma-voice']:addChannelCheck(i, function(source)
+        local Player = QBCore.Functions.GetPlayer(source)
+        if Config.AllowedJobs[Player.PlayerData.job.name] and Player.PlayerData.job.onduty then
+            return true
+        end
+        return false
+    end)
+end
