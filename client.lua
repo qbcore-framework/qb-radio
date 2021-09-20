@@ -57,9 +57,9 @@ function connecttoradio(channel)
     exports["pma-voice"]:setRadioChannel(channel)
 
     if SplitStr(tostring(channel), ".")[2] ~= nil and SplitStr(tostring(channel), ".")[2] ~= "" then
-        QBCore.Functions.Notify(Config.messages['joined_to_radio'] ..channel.. ' MHz </b>', 'success')
+        QBCore.Functions.Notify(Config.messages['joined_to_radio'] ..channel.. ' MHz', 'success')
     else
-        QBCore.Functions.Notify(Config.messages['joined_to_radio'] ..channel.. '.00 MHz </b>', 'success')
+        QBCore.Functions.Notify(Config.messages['joined_to_radio'] ..channel.. '.00 MHz', 'success')
     end
 end
 
