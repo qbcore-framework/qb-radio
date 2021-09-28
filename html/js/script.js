@@ -37,6 +37,22 @@ $(document).on('click', '#disconnect', function(e){
     $.post('https://qb-radio/leaveRadio');
 });
 
+$(document).on('click', '#volumeUp', function(e){
+    e.preventDefault();
+
+    $.post('https://qb-radio/volumeUp', JSON.stringify({
+        channel: $("#channel").val()
+    }));
+});
+
+$(document).on('click', '#volumeDown', function(e){
+    e.preventDefault();
+
+    $.post('https://qb-radio/volumeDown', JSON.stringify({
+        channel: $("#channel").val()
+    }));
+});
+
 QBRadio.SlideUp = function() {
     $(".container").css("display", "block");
     $(".radio-container").animate({bottom: "6vh",}, 250);
