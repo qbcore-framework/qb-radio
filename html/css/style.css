@@ -85,6 +85,34 @@ body {
   background: rgba(255, 255, 255, 0.25);
 }
 
+#increaseradiochannel {
+  position: absolute;
+  width: 3.3vh;
+  height: 1.9vh;
+  bottom: 30vh;
+  left: 0.0vh;
+  border-radius: 5px;
+  transition: all 0.1s linear;
+}
+
+#increaseradiochannel:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+#decreaseradiochannel {
+  position: absolute;
+  width: 3.3vh;
+  height: 1.9vh;
+  bottom: 18vh;
+  left: 0.0vh;
+  border-radius: 5px;
+  transition: all 0.1s linear;
+}
+
+#decreaseradiochannel:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
 .onoff button {
   padding: 40px 55px;
   opacity: .0;
