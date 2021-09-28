@@ -156,6 +156,21 @@ RegisterNUICallback("volumeUp", function(data, cb)
 	end
 end)
 
+RegisterNUICallback("increaseradiochannel", function(data, cb)
+    local newChannel = RadioChannel + 1
+	exports["pma-voice"]:setRadioChannel(newChannel)
+	QBCore.Functions.Notify(Config.messages["increase_decrease_radio_channel"] .. newChannel, "success")
+end)
+
+RegisterNUICallback("decreaseradiochannel", function(data, cb)
+    if not onRadio then return end
+    local newChannel = RadioChannel - 1
+    if newChannel >= 1 then
+		exports["pma-voice"]:setRadioChannel(newChannel)
+		QBCore.Functions.Notify(Config.messages["increase_decrease_radio_channel"] .. newChannel, "success")
+    end
+end)
+
 RegisterNUICallback('escape', function(data, cb)
     toggleRadio(false)
 end)
