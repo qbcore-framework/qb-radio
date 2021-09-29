@@ -23,6 +23,7 @@ Config.messages = {
     ["invalid_radio"] = "This frequency is not available.",
     ["you_on_radio"] = "You're already connected to this channel",
     ["you_leave"] = "You left the channel.",
+    ['volume_radio'] = 'New volume ',
     ['decrease_radio_volume'] = 'The radio is already set to maximum volume',
     ['increase_radio_volume'] = 'The radio is already set to the lowest volume',
     ['increase_decrease_radio_channel'] = 'New channel ',
