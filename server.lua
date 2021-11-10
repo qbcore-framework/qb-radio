@@ -1,3 +1,5 @@
+local QBCore = exports['qb-core']:GetCoreObject()
+
 QBCore.Functions.CreateUseableItem("radio", function(source, item)
     TriggerClientEvent('qb-radio:use', source)
 end)

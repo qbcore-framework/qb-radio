@@ -1,3 +1,4 @@
+local QBCore = exports['qb-core']:GetCoreObject()
 local radioMenu = false
 local isLoggedIn = false
 local onRadio = false
@@ -81,7 +82,7 @@ function SplitStr(inputstr, sep)
     end
     return t
 end
-  
+
 function IsRadioOn()
     return onRadio
 end
