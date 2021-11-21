@@ -4,24 +4,20 @@ local isLoggedIn = false
 local onRadio = false
 local RadioChannel = 0
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
 end)
 
-RegisterNetEvent('QBCore:Client:OnPlayerUnload')
-AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
     isLoggedIn = false
     leaveradio()
 end)
 
-RegisterNetEvent('qb-radio:use')
-AddEventHandler('qb-radio:use', function()
+RegisterNetEvent('qb-radio:use', function()
     toggleRadio(not radioMenu)
 end)
 
-RegisterNetEvent('qb-radio:onRadioDrop')
-AddEventHandler('qb-radio:onRadioDrop', function()
+RegisterNetEvent('qb-radio:onRadioDrop', function()
     if RadioChannel ~= 0 then
         leaveradio()
     end
@@ -29,7 +25,7 @@ end)
 
 -- Main Thread
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         Wait(1000)
         if isLoggedIn and onRadio then
@@ -54,9 +50,7 @@ function connecttoradio(channel)
         onRadio = true
         exports["pma-voice"]:setVoiceProperty("radioEnabled", true)
     end
-
     exports["pma-voice"]:setRadioChannel(channel)
-
     if SplitStr(tostring(channel), ".")[2] ~= nil and SplitStr(tostring(channel), ".")[2] ~= "" then
         QBCore.Functions.Notify(Config.messages['joined_to_radio'] ..channel.. ' MHz', 'success')
     else
