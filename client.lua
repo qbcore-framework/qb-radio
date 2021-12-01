@@ -3,6 +3,7 @@ local radioMenu = false
 local isLoggedIn = false
 local onRadio = false
 local RadioChannel = 0
+local RadioVolume = tonumber(GetConvar("voice_defaultVolume", "0.3"))
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
@@ -127,6 +128,41 @@ RegisterNUICallback('leaveRadio', function(data, cb)
         QBCore.Functions.Notify(Config.messages['not_on_radio'], 'error')
     else
         leaveradio()
+    end
+end)
+
+RegisterNUICallback("volumeDown", function(data, cb)
+	if RadioVolume <= 1.0 then
+		RadioVolume = RadioVolume + 0.05
+		QBCore.Functions.Notify(Config.messages["volume_radio"] .. RadioVolume, "success")
+		exports["pma-voice"]:setRadioVolume(RadioVolume)
+	else
+		QBCore.Functions.Notify(Config.messages["decrease_radio_volume"], "error")
+	end
+end)
+
+RegisterNUICallback("volumeUp", function(data, cb)
+	if RadioVolume > 0.15 then
+		RadioVolume = RadioVolume - 0.05
+		QBCore.Functions.Notify(Config.messages["volume_radio"] .. RadioVolume, "success")
+		exports["pma-voice"]:setRadioVolume(RadioVolume)
+	else
+		QBCore.Functions.Notify(Config.messages["increase_radio_volume"], "error")
+	end
+end)
+
+RegisterNUICallback("increaseradiochannel", function(data, cb)
+    local newChannel = RadioChannel + 1
+	exports["pma-voice"]:setRadioChannel(newChannel)
+	QBCore.Functions.Notify(Config.messages["increase_decrease_radio_channel"] .. newChannel, "success")
+end)
+
+RegisterNUICallback("decreaseradiochannel", function(data, cb)
+    if not onRadio then return end
+    local newChannel = RadioChannel - 1
+    if newChannel >= 1 then
+		exports["pma-voice"]:setRadioChannel(newChannel)
+		QBCore.Functions.Notify(Config.messages["increase_decrease_radio_channel"] .. newChannel, "success")
     end
 end)
 
