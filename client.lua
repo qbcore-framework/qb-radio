@@ -3,7 +3,7 @@ local radioMenu = false
 local isLoggedIn = false
 local onRadio = false
 local RadioChannel = 0
-local RadioVolume = tonumber(GetConvar("voice_defaultVolume", "0.3"))
+local RadioVolume = 50
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
@@ -131,9 +131,9 @@ RegisterNUICallback('leaveRadio', function(data, cb)
     end
 end)
 
-RegisterNUICallback("volumeDown", function(data, cb)
-	if RadioVolume <= 1.0 then
-		RadioVolume = RadioVolume + 0.05
+RegisterNUICallback("volumeUp", function()
+	if RadioVolume <= 95 then
+		RadioVolume = RadioVolume + 5
 		QBCore.Functions.Notify(Config.messages["volume_radio"] .. RadioVolume, "success")
 		exports["pma-voice"]:setRadioVolume(RadioVolume)
 	else
@@ -141,9 +141,9 @@ RegisterNUICallback("volumeDown", function(data, cb)
 	end
 end)
 
-RegisterNUICallback("volumeUp", function(data, cb)
-	if RadioVolume > 0.15 then
-		RadioVolume = RadioVolume - 0.05
+RegisterNUICallback("volumeDown", function()
+	if RadioVolume >= 10 then
+		RadioVolume = RadioVolume - 5
 		QBCore.Functions.Notify(Config.messages["volume_radio"] .. RadioVolume, "success")
 		exports["pma-voice"]:setRadioVolume(RadioVolume)
 	else
