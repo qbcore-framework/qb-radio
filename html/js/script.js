@@ -69,6 +69,14 @@ $(document).on('click', '#increaseradiochannel', function(e){
     }));
 });
 
+$(document).on('click', '#poweredOff', function(e){
+    e.preventDefault();
+
+    $.post('https://qb-radio/poweredOff', JSON.stringify({
+        channel: $("#channel").val()
+    }));
+});
+
 QBRadio.SlideUp = function() {
     $(".container").css("display", "block");
     $(".radio-container").animate({bottom: "6vh",}, 250);

@@ -113,6 +113,20 @@ body {
   background: rgba(255, 255, 255, 0.25);
 }
 
+#poweredOff {
+  position: absolute;
+  width: 3.3vh;
+  height: 2.9vh;
+  bottom: 50vh;
+  left: 0.0vh;
+  border-radius: 5px;
+  transition: all 0.1s linear;
+}
+
+#poweredOff:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
 .onoff button {
   padding: 40px 55px;
   opacity: .0;

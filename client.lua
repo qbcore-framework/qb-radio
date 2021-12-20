@@ -193,6 +193,10 @@ RegisterNUICallback("decreaseradiochannel", function(data, cb)
     end
 end)
 
+RegisterNUICallback('poweredOff', function(data, cb)
+	leaveradio()
+end)
+
 RegisterNUICallback('escape', function(data, cb)
     toggleRadio(false)
 end)
