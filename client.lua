@@ -1,16 +1,10 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local radioMenu = false
-local isLoggedIn = false
 local onRadio = false
 local RadioChannel = 0
 local RadioVolume = 50
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-    isLoggedIn = true
-end)
-
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-    isLoggedIn = false
     leaveradio()
 end)
 
@@ -29,7 +23,7 @@ end)
 CreateThread(function()
     while true do
         Wait(1000)
-        if isLoggedIn and onRadio then
+        if LocalPlayer.state.isLoggedIn and onRadio then
             QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
                 if not hasItem then
                     if RadioChannel ~= 0 then
@@ -60,7 +54,8 @@ function connecttoradio(channel)
 end
 
 function leaveradio()
-    RadioChannel = 0
+    closeEvent()
+	RadioChannel = 0
     onRadio = false
     exports["pma-voice"]:setRadioChannel(0)
     exports["pma-voice"]:setVoiceProperty("radioEnabled", false)
@@ -91,8 +86,8 @@ RegisterNUICallback('joinRadio', function(data, cb)
         if rchannel <= Config.MaxFrequency and rchannel ~= 0 then
             if rchannel ~= RadioChannel then
                 if Config.RestrictedChannels[rchannel] ~= nil then
-                    local xPlayer = QBCore.Functions.GetPlayerData()
-                    if Config.RestrictedChannels[rchannel][xPlayer.job.name] and xPlayer.job.onduty then
+                    local Player = QBCore.Functions.GetPlayerData()
+                    if Config.RestrictedChannels[rchannel][Player.job.name] and Player.job.onduty then
                         connecttoradio(rchannel)
                     else
                         QBCore.Functions.Notify(Config.messages['restricted_channel_error'], 'error')
@@ -111,14 +106,46 @@ RegisterNUICallback('joinRadio', function(data, cb)
     end
 end)
 
+function LoadAnimDic(dict)
+    if not HasAnimDictLoaded(dict) then
+        RequestAnimDict(dict)
+
+        while not HasAnimDictLoaded(dict) do
+            Wait(0)
+        end
+    end
+end
+
+function toggleRadioAnimation(pState)
+	LoadAnimDic("cellphone@")
+	
+	if pState then
+		TriggerEvent("attachItemRadio","radio01")
+		TaskPlayAnim(PlayerPedId(), "cellphone@", "cellphone_text_read_base", 2.0, 3.0, -1, 49, 0, 0, 0, 0)
+		radioProp = CreateObject(`prop_cs_hand_radio`, 1.0, 1.0, 1.0, 1, 1, 0)
+		AttachEntityToEntity(radioProp, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 57005), 0.14, 0.01, -0.02, 110.0, 120.0, -15.0, 1, 0, 0, 0, 2, 1)
+	else
+		StopAnimTask(PlayerPedId(), "cellphone@", "cellphone_text_read_base", 1.0)
+		ClearPedTasks(PlayerPedId())
+		if radioProp ~= 0 then
+			DeleteObject(radioProp)
+			radioProp = 0
+		end
+	end
+end
+
+function closeEvent()
+	TriggerEvent("InteractSound_CL:PlayOnOne","click",0.6)
+end
+
 function toggleRadio(toggle)
     radioMenu = toggle
     SetNuiFocus(radioMenu, radioMenu)
     if radioMenu then
-        PhonePlayIn()
+		toggleRadioAnimation(true)
         SendNUIMessage({type = "open"})
     else
-        PhonePlayOut()
+		toggleRadioAnimation(false)
         SendNUIMessage({type = "close"})
     end
 end
