@@ -64,6 +64,8 @@ function leaveradio()
     QBCore.Functions.Notify(Config.messages['you_leave'] , 'error')
 end
 
+exports("leaveradio", leaveradio)
+
 function SplitStr(inputstr, sep)
     if sep == nil then
         sep = "%s"
