@@ -53,6 +53,8 @@ function connecttoradio(channel)
     end
 end
 
+exports("connecttoradio", connecttoradio)
+
 function leaveradio()
     closeEvent()
 	RadioChannel = 0
