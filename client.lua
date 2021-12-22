@@ -1,11 +1,21 @@
 local QBCore = exports['qb-core']:GetCoreObject()
+local PlayerData = QBCore.Functions.GetPlayerData() -- Just for resource restart (same as event handler)
 local radioMenu = false
 local onRadio = false
 local RadioChannel = 0
 local RadioVolume = 50
 
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    PlayerData = QBCore.Functions.GetPlayerData()
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerData.job = JobInfo
+end)
+
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-    leaveradio()
+    PlayerData = {}
+	leaveradio()
 end)
 
 RegisterNetEvent('qb-radio:use', function()
@@ -80,14 +90,14 @@ end
 exports("IsRadioOn", IsRadioOn)
 
 -- NUI
+
 RegisterNUICallback('joinRadio', function(data, cb)
     local rchannel = tonumber(data.channel)
     if rchannel ~= nil then
         if rchannel <= Config.MaxFrequency and rchannel ~= 0 then
             if rchannel ~= RadioChannel then
                 if Config.RestrictedChannels[rchannel] ~= nil then
-                    local Player = QBCore.Functions.GetPlayerData()
-                    if Config.RestrictedChannels[rchannel][Player.job.name] and Player.job.onduty then
+                    if Config.RestrictedChannels[rchannel][PlayerData.job.name] and PlayerData.job.onduty then
                         connecttoradio(rchannel)
                     else
                         QBCore.Functions.Notify(Config.messages['restricted_channel_error'], 'error')
