@@ -9,13 +9,13 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
 end)
 
-RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
-    PlayerData.job = JobInfo
-end)
-
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
     PlayerData = {}
-	leaveradio()
+    leaveradio()
+end)
+
+RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
+    PlayerData = val
 end)
 
 RegisterNetEvent('qb-radio:use', function()
@@ -40,7 +40,7 @@ CreateThread(function()
                         leaveradio()
                     end
                 end
-            end,"radio")
+            end, "radio")
         end
     end
 end)
@@ -65,7 +65,7 @@ end
 
 function leaveradio()
     closeEvent()
-	RadioChannel = 0
+    RadioChannel = 0
     onRadio = false
     exports["pma-voice"]:setRadioChannel(0)
     exports["pma-voice"]:setVoiceProperty("radioEnabled", false)
@@ -119,7 +119,6 @@ end)
 function LoadAnimDic(dict)
     if not HasAnimDictLoaded(dict) then
         RequestAnimDict(dict)
-
         while not HasAnimDictLoaded(dict) do
             Wait(0)
         end
@@ -152,10 +151,10 @@ function toggleRadio(toggle)
     radioMenu = toggle
     SetNuiFocus(radioMenu, radioMenu)
     if radioMenu then
-		toggleRadioAnimation(true)
+        toggleRadioAnimation(true)
         SendNUIMessage({type = "open"})
     else
-		toggleRadioAnimation(false)
+        toggleRadioAnimation(false)
         SendNUIMessage({type = "close"})
     end
 end
@@ -190,21 +189,21 @@ end)
 
 RegisterNUICallback("increaseradiochannel", function(data, cb)
     local newChannel = RadioChannel + 1
-	exports["pma-voice"]:setRadioChannel(newChannel)
-	QBCore.Functions.Notify(Config.messages["increase_decrease_radio_channel"] .. newChannel, "success")
+    exports["pma-voice"]:setRadioChannel(newChannel)
+    QBCore.Functions.Notify(Config.messages["increase_decrease_radio_channel"] .. newChannel, "success")
 end)
 
 RegisterNUICallback("decreaseradiochannel", function(data, cb)
     if not onRadio then return end
     local newChannel = RadioChannel - 1
     if newChannel >= 1 then
-		exports["pma-voice"]:setRadioChannel(newChannel)
-		QBCore.Functions.Notify(Config.messages["increase_decrease_radio_channel"] .. newChannel, "success")
+        exports["pma-voice"]:setRadioChannel(newChannel)
+        QBCore.Functions.Notify(Config.messages["increase_decrease_radio_channel"] .. newChannel, "success")
     end
 end)
 
 RegisterNUICallback('poweredOff', function(data, cb)
-	leaveradio()
+    leaveradio()
 end)
 
 RegisterNUICallback('escape', function(data, cb)
