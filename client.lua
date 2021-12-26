@@ -13,6 +13,10 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerData.job = JobInfo
 end)
 
+RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
+    PlayerData.gang = GangInfo
+end)
+
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
     PlayerData = {}
 	leaveradio()
