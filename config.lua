@@ -40,6 +40,15 @@ Config.RestrictedChannels = {
     [10] = {
         police = true,
         ambulance = true
+    },
+    [110] = {
+        lostmc = true,
+    },
+    [120] = {
+        ballas = true,
+    },
+    [130] = {
+        vagos = true,
     }
 }
 
