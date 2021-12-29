@@ -210,3 +210,13 @@ end)
 RegisterNUICallback('escape', function(data, cb)
     toggleRadio(false)
 end)
+
+RegisterNetEvent('qb-radio:client:enterchannel', function(channel)
+    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
+        if HasItem then
+            connecttoradio(channel)
+        else
+            QBCore.Functions.Notify("You don't have a radio", "error", 4500)
+        end
+    end, "radio")
+end)
