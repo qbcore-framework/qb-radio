@@ -106,7 +106,7 @@ RegisterNetEvent('qb-radio:client:use', function()
     toggleRadio(not radioMenu)
 end)
 
-RegisterNetEvent('qb-radio:onRadioDrop', function()
+RegisterNetEvent('qb-radio:client:onRadioDrop', function()
     if RadioChannel ~= 0 then
         leaveradio()
     end
