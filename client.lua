@@ -58,7 +58,6 @@ end
 local function toggleRadioAnimation(pState)
 	LoadAnimDic("cellphone@")
 	if pState then
-		TriggerEvent("attachItemRadio","radio01")
 		TaskPlayAnim(PlayerPedId(), "cellphone@", "cellphone_text_read_base", 2.0, 3.0, -1, 49, 0, 0, 0, 0)
 		radioProp = CreateObject(`prop_cs_hand_radio`, 1.0, 1.0, 1.0, 1, 1, 0)
 		AttachEntityToEntity(radioProp, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 57005), 0.14, 0.01, -0.02, 110.0, 120.0, -15.0, 1, 0, 0, 0, 2, 1)
@@ -88,10 +87,8 @@ local function IsRadioOn()
     return onRadio
 end
 
---Exports
-exports("IsRadioOn", IsRadioOn)
-
 --Events
+
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
 end)
@@ -105,7 +102,7 @@ RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
     PlayerData = val
 end)
 
-RegisterNetEvent('qb-radio:use', function()
+RegisterNetEvent('qb-radio:client:use', function()
     toggleRadio(not radioMenu)
 end)
 
@@ -115,14 +112,25 @@ RegisterNetEvent('qb-radio:onRadioDrop', function()
     end
 end)
 
+RegisterNetEvent('qb-radio:client:setChannel', function(RadioNumber)
+    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
+        if HasItem then
+			connecttoradio(RadioNumber)
+        else
+            QBCore.Functions.Notify("You don't have a radio..", "error", 3000)
+        end
+    end, "radio")
+end)
+
 -- NUI
+
 RegisterNUICallback('joinRadio', function(data, cb)
     local rchannel = tonumber(data.channel)
     if rchannel ~= nil then
         if rchannel <= Config.MaxFrequency and rchannel ~= 0 then
             if rchannel ~= RadioChannel then
                 if Config.RestrictedChannels[rchannel] ~= nil then
-                    if Config.RestrictedChannels[rchannel][PlayerData.job.name] and PlayerData.job.onduty then
+                    if Config.RestrictedChannels[rchannel][PlayerData.job.name] and PlayerData.job.onduty or Config.RestrictedChannels[rchannel][PlayerData.gang.name] then
                         connecttoradio(rchannel)
                     else
                         QBCore.Functions.Notify(Config.messages['restricted_channel_error'], 'error')
@@ -192,7 +200,7 @@ RegisterNUICallback('escape', function(data, cb)
     toggleRadio(false)
 end)
 
---Main Thread
+-- Thread
 CreateThread(function()
     while true do
         Wait(1000)
@@ -207,3 +215,9 @@ CreateThread(function()
         end
     end
 end)
+
+--Exports
+
+exports("IsRadioOn", IsRadioOn)
+exports("leaveradio", leaveradio)
+exports("connecttoradio", connecttoradio)
