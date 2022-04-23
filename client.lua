@@ -43,7 +43,7 @@ local function connecttoradio(channel)
 end
 
 local function closeEvent()
-	TriggerEvent("InteractSound_CL:PlayOnOne","click",0.6)
+	TriggerEvent("InteractSound_CL:PlayOnOne","monkeyopening",0.6)
 end
 
 local function leaveradio()
