@@ -4,6 +4,7 @@ local radioMenu = false
 local onRadio = false
 local RadioChannel = 0
 local RadioVolume = 50
+local hasRadio = false
 local radioProp = nil
 
 --Function
@@ -89,21 +90,49 @@ local function IsRadioOn()
     return onRadio
 end
 
+local function DoRadioCheck(PlayerItems)
+    local _hasRadio = false
+
+    for _, item in pairs(PlayerItems) do
+        if item.name == "radio" then
+            _hasRadio = true
+            break;
+        end
+    end
+
+    hasRadio = _hasRadio
+end
+
 --Exports
 exports("IsRadioOn", IsRadioOn)
 
 --Events
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+
+-- Handles state right when the player selects their character and location.
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
+    DoRadioCheck(PlayerData.items)
 end)
 
+-- Resets state on logout, in case of character change.
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+    DoRadioCheck({})
     PlayerData = {}
     leaveradio()
 end)
 
+-- Handles state when PlayerData is changed. We're just looking for inventory updates.
 RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
     PlayerData = val
+    DoRadioCheck(PlayerData.items)
+end)
+
+-- Handles state if resource is restarted live.
+AddEventHandler('onResourceStart', function(resource)
+    if GetCurrentResourceName() == resource then
+        PlayerData = QBCore.Functions.GetPlayerData()
+        DoRadioCheck(PlayerData.items)
+    end
 end)
 
 RegisterNetEvent('qb-radio:use', function()
@@ -204,13 +233,11 @@ CreateThread(function()
     while true do
         Wait(1000)
         if LocalPlayer.state.isLoggedIn and onRadio then
-            QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
-                if not hasItem then
-                    if RadioChannel ~= 0 then
-                        leaveradio()
-                    end
+            if not hasRadio or PlayerData.metadata.isdead or PlayerData.metadata.inlaststand then
+                if RadioChannel ~= 0 then
+                    leaveradio()
                 end
-            end, "radio")
+            end
         end
     end
 end)
