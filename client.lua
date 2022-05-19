@@ -181,7 +181,7 @@ RegisterNUICallback('leaveRadio', function(_, cb)
     cb("ok")
 end)
 
-RegisterNUICallback("volumeUp", function()
+RegisterNUICallback("volumeUp", function(_, cb)
 	if RadioVolume <= 95 then
 		RadioVolume = RadioVolume + 5
 		QBCore.Functions.Notify(Config.messages["volume_radio"] .. RadioVolume, "success")
@@ -189,9 +189,10 @@ RegisterNUICallback("volumeUp", function()
 	else
 		QBCore.Functions.Notify(Config.messages["decrease_radio_volume"], "error")
 	end
+    cb('ok')
 end)
 
-RegisterNUICallback("volumeDown", function()
+RegisterNUICallback("volumeDown", function(_, cb)
 	if RadioVolume >= 10 then
 		RadioVolume = RadioVolume - 5
 		QBCore.Functions.Notify(Config.messages["volume_radio"] .. RadioVolume, "success")
@@ -199,6 +200,7 @@ RegisterNUICallback("volumeDown", function()
 	else
 		QBCore.Functions.Notify(Config.messages["increase_radio_volume"], "error")
 	end
+    cb('ok')
 end)
 
 RegisterNUICallback("increaseradiochannel", function(_, cb)
