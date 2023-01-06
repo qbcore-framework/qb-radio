@@ -22,6 +22,34 @@ $(function() {
 });
 
 QBRadio = {}
+$(document).on('click', '#list', function(e){
+
+    fetch("https://qb-radio/getPlayers", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({}),
+  }).then((resp) =>
+    resp.json().then((resp) => {
+        const pdada = resp;
+        const playerParent = document.getElementById("playerlistcontaner");
+        playerParent.innerHTML = ``;
+        if (pdada) {
+            for (let i = 0; i < pdada.length; i++) {
+                const playerdata = pdada[i];
+                
+                const playerCart = document.createElement("div");
+                playerCart.id = playerdata.pid;
+                playerCart.innerHTML = `[${playerdata.pid}] ${playerdata.name}`;
+                playerParent.appendChild(playerCart);
+            }
+        }
+    })
+  );
+
+    $("#playerlistcontaner").toggle();
+});
 
 $(document).on('click', '#submit', function(e){
     e.preventDefault();
@@ -55,18 +83,28 @@ $(document).on('click', '#volumeDown', function(e){
 
 $(document).on('click', '#decreaseradiochannel', function(e){
     e.preventDefault();
-
-    $.post('https://qb-radio/decreaseradiochannel', JSON.stringify({
-        channel: $("#channel").val()
-    }));
+    var current =  $("#channel").val() - 1;
+    if(current > 0)
+    {
+        $.post('https://qb-radio/decreaseradiochannel', JSON.stringify({
+            channel: $("#channel").val()
+        }));
+        $("#channel").val("");
+        $("#channel").val(current);
+    }
 });
 
 $(document).on('click', '#increaseradiochannel', function(e){
     e.preventDefault();
-
-    $.post('https://qb-radio/increaseradiochannel', JSON.stringify({
-        channel: $("#channel").val()
-    }));
+    var current =  parseInt($("#channel").val()) + 1;
+    if (current > 0)
+    {
+        $.post('https://qb-radio/increaseradiochannel', JSON.stringify({
+            channel: $("#channel").val()
+        }));
+        $("#channel").val("");
+        $("#channel").val(current);
+    }
 });
 
 $(document).on('click', '#poweredOff', function(e){

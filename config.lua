@@ -26,20 +26,61 @@ Config.RestrictedChannels = {
         ambulance = true
     },
     [7] = {
-        police = true,
-        ambulance = true
+        mechanic = true
     },
     [8] = {
-        police = true,
-        ambulance = true
+        tunershop =true
     },
     [9] = {
-        police = true,
-        ambulance = true
+        reporter =true
     },
     [10] = {
-        police = true,
-        ambulance = true
+        judge =true
+    },
+    [11] = {
+        lawyer =true
+    },
+    [12] = {
+        reporter =true
+    },
+    [13] = {
+        tow =true
+    },
+    [14] = {
+        tlrp = true -- TLRP Official Developers
+    },
+    [15] = {
+        tunershop =true
+    },
+    [16] = {
+        burgershot =true
+    },
+    [17] = {
+        tequilala =true
+    },
+    [18] = {
+        bahamas =true
+    },
+    [19] = {
+        government =true
+    },
+    [20] = {
+        auction =true
+    },
+    [21] = {
+        uwucafe = true
+    },
+    [22] = {
+        cardealer =true
+    },
+    [23] = {
+        luxuryauto =true
+    },
+    [24] = {
+        gunshop =true
+    },
+    [25] = {
+        bandhilki =true
     }
 }
 
