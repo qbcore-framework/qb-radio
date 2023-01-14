@@ -23,4 +23,6 @@ files {
   'html/img/radio.png'
 }
 
+dependency 'pma-voice'
+
 lua54 'yes'
