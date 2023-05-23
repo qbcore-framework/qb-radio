@@ -2,7 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 
 description 'QB-Radio'
-version '1.2.1'
+version '1.2.2'
 
 shared_script 'config.lua'
 
@@ -20,5 +20,7 @@ files {
   'html/css/style.css',
   'html/img/radio.png'
 }
+
+dependency 'pma-voice'
 
 lua54 'yes'
