@@ -38,9 +38,9 @@ local function connecttoradio(channel)
     end
     exports["pma-voice"]:setRadioChannel(channel)
     if SplitStr(tostring(channel), ".")[2] ~= nil and SplitStr(tostring(channel), ".")[2] ~= "" then
-        QBCore.Functions.Notify(Config.messages['joined_to_radio'] ..channel.. ' MHz', 'success')
+        QBCore.Functions.Notify(Lang:t('joined_to_radio', {channel = channel .. ' MHz'}), 'success')
     else
-        QBCore.Functions.Notify(Config.messages['joined_to_radio'] ..channel.. '.00 MHz', 'success')
+        QBCore.Functions.Notify(Lang:t('joined_to_radio', {channel = channel .. '.00 MHz'}), 'success')
     end
 end
 
@@ -54,7 +54,7 @@ local function leaveradio()
     onRadio = false
     exports["pma-voice"]:setRadioChannel(0)
     exports["pma-voice"]:setVoiceProperty("radioEnabled", false)
-    QBCore.Functions.Notify(Config.messages['you_leave'] , 'error')
+    QBCore.Functions.Notify(Lang:t('you_leave') , 'error')
 end
 
 local function toggleRadioAnimation(pState)
@@ -155,26 +155,26 @@ RegisterNUICallback('joinRadio', function(data, cb)
                     if Config.RestrictedChannels[rchannel][PlayerData.job.name] and PlayerData.job.onduty then
                         connecttoradio(rchannel)
                     else
-                        QBCore.Functions.Notify(Config.messages['restricted_channel_error'], 'error')
+                        QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error')
                     end
                 else
                     connecttoradio(rchannel)
                 end
             else
-                QBCore.Functions.Notify(Config.messages['you_on_radio'] , 'error')
+                QBCore.Functions.Notify(Lang:t('you_on_radio') , 'error')
             end
         else
-            QBCore.Functions.Notify(Config.messages['invalid_radio'] , 'error')
+            QBCore.Functions.Notify(Lang:t('invalid_radio') , 'error')
         end
     else
-        QBCore.Functions.Notify(Config.messages['invalid_radio'] , 'error')
+        QBCore.Functions.Notify(Lang:t('invalid_radio') , 'error')
     end
     cb("ok")
 end)
 
 RegisterNUICallback('leaveRadio', function(_, cb)
     if RadioChannel == 0 then
-        QBCore.Functions.Notify(Config.messages['not_on_radio'], 'error')
+        QBCore.Functions.Notify(Lang:t('not_on_radio'), 'error')
     else
         leaveradio()
     end
@@ -184,10 +184,10 @@ end)
 RegisterNUICallback("volumeUp", function(_, cb)
 	if RadioVolume <= 95 then
 		RadioVolume = RadioVolume + 5
-		QBCore.Functions.Notify(Config.messages["volume_radio"] .. RadioVolume, "success")
+		QBCore.Functions.Notify(Lang:t("volume_radio", { value = RadioVolume}), "success")
 		exports["pma-voice"]:setRadioVolume(RadioVolume)
 	else
-		QBCore.Functions.Notify(Config.messages["decrease_radio_volume"], "error")
+		QBCore.Functions.Notify(Lang:t("decrease_radio_volume"), "error")
 	end
     cb('ok')
 end)
@@ -195,10 +195,10 @@ end)
 RegisterNUICallback("volumeDown", function(_, cb)
 	if RadioVolume >= 10 then
 		RadioVolume = RadioVolume - 5
-		QBCore.Functions.Notify(Config.messages["volume_radio"] .. RadioVolume, "success")
+		QBCore.Functions.Notify(Lang:t("volume_radio", {value = RadioVolume}), "success")
 		exports["pma-voice"]:setRadioVolume(RadioVolume)
 	else
-		QBCore.Functions.Notify(Config.messages["increase_radio_volume"], "error")
+		QBCore.Functions.Notify(Lang:t("increase_radio_volume"), "error")
 	end
     cb('ok')
 end)
@@ -206,7 +206,7 @@ end)
 RegisterNUICallback("increaseradiochannel", function(_, cb)
     local newChannel = RadioChannel + 1
     connecttoradio(newChannel)
-    QBCore.Functions.Notify(Config.messages["increase_decrease_radio_channel"] .. newChannel, "success")
+    QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
     cb("ok")
 end)
 
@@ -215,7 +215,7 @@ RegisterNUICallback("decreaseradiochannel", function(_, cb)
     local newChannel = RadioChannel - 1
     if newChannel >= 1 then
         connecttoradio(newChannel)
-        QBCore.Functions.Notify(Config.messages["increase_decrease_radio_channel"] .. newChannel, "success")
+        QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
         cb("ok")
     end
 end)
