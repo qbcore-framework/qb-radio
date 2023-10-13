@@ -4,7 +4,12 @@ game 'gta5'
 description 'QB-Radio'
 version '1.2.2'
 
-shared_script 'config.lua'
+shared_script {
+  '@qb-core/shared/locale.lua',
+  'locales/en.lua',
+  'locales/*.lua',
+  'config.lua'
+}
 
 client_scripts {
   'client.lua',
