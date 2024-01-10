@@ -31,10 +31,10 @@ body {
 
 #submit {
   position: absolute;
-  width: 2.2vh;
-  height: 3.2vh;
-  bottom: 14vh;
-  left: 4.2vh;
+  width: 3.5vh;
+  height: 3.0vh;
+  bottom: 10vh;
+  left: 2.0vh;
   border-radius: 5px;
   transition: all 0.1s linear;
 }
@@ -45,10 +45,10 @@ body {
 
 #disconnect {
   position: absolute;
-  width: 2.2vh;
-  height: 3.2vh;
-  bottom: 14vh;
-  right: 3.2vh;
+  width: 3.5vh;
+  height: 3.0vh;
+  bottom: 10vh;
+  right: 2.0vh;
   border-radius: 5px;
   transition: all 0.1s linear;
 }
@@ -59,10 +59,10 @@ body {
 
 #volumeUp {
   position: absolute;
-  width: 3.3vh;
-  height: 1.9vh;
-  bottom: 18vh;
-  right: 3.1vh;
+  width: 3.8vh;
+  height: 3.7vh;
+  bottom: 29.5vh;
+  right: 0.9vh;
   border-radius: 5px;
   transition: all 0.1s linear;
 }
@@ -73,10 +73,10 @@ body {
 
 #volumeDown {
   position: absolute;
-  width: 3.3vh;
-  height: 1.9vh;
-  bottom: 18vh;
-  left: 4.0vh;
+  width: 3.8vh;
+  height: 3.6vh;
+  bottom: 18.5vh;
+  right: 0.9vh;
   border-radius: 5px;
   transition: all 0.1s linear;
 }
@@ -87,10 +87,10 @@ body {
 
 #increaseradiochannel {
   position: absolute;
-  width: 3.3vh;
-  height: 1.9vh;
-  bottom: 30vh;
-  left: 0.0vh;
+  width: 3.8vh;
+  height: 3.8vh;
+  bottom: 29.5vh;
+  left: 0.8vh;
   border-radius: 5px;
   transition: all 0.1s linear;
 }
@@ -101,10 +101,10 @@ body {
 
 #decreaseradiochannel {
   position: absolute;
-  width: 3.3vh;
-  height: 1.9vh;
-  bottom: 18vh;
-  left: 0.0vh;
+  width: 3.8vh;
+  height: 3.6vh;
+  bottom: 18.5vh;
+  left: 0.8vh;
   border-radius: 5px;
   transition: all 0.1s linear;
 }
