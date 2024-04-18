@@ -29,6 +29,12 @@ local function SplitStr(inputstr, sep)
 end
 
 local function connecttoradio(channel)
+    if Config.RestrictedChannels[channel] ~= nil then
+        if not Config.RestrictedChannels[channel][PlayerData.job.name] and PlayerData.job.onduty then
+            QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error')
+            return false
+        end
+    end
     RadioChannel = channel
     if onRadio then
         exports["pma-voice"]:setRadioChannel(0)
@@ -42,6 +48,7 @@ local function connecttoradio(channel)
     else
         QBCore.Functions.Notify(Lang:t('joined_to_radio', {channel = channel .. '.00 MHz'}), 'success')
     end
+    return true
 end
 
 local function closeEvent()
@@ -151,15 +158,7 @@ RegisterNUICallback('joinRadio', function(data, cb)
     if rchannel ~= nil then
         if rchannel <= Config.MaxFrequency and rchannel ~= 0 then
             if rchannel ~= RadioChannel then
-                if Config.RestrictedChannels[rchannel] ~= nil then
-                    if Config.RestrictedChannels[rchannel][PlayerData.job.name] and PlayerData.job.onduty then
-                        connecttoradio(rchannel)
-                    else
-                        QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error')
-                    end
-                else
-                    connecttoradio(rchannel)
-                end
+                connecttoradio(rchannel)
             else
                 QBCore.Functions.Notify(Lang:t('you_on_radio') , 'error')
             end
@@ -205,18 +204,24 @@ end)
 
 RegisterNUICallback("increaseradiochannel", function(_, cb)
     local newChannel = RadioChannel + 1
-    connecttoradio(newChannel)
-    QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
-    cb("ok")
+    local canaccess = connecttoradio(newChannel)
+    if canaccess then QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success") end
+    cb({
+       canaccess = canaccess,
+       channel = newChannel
+    })
 end)
 
 RegisterNUICallback("decreaseradiochannel", function(_, cb)
     if not onRadio then return end
     local newChannel = RadioChannel - 1
     if newChannel >= 1 then
-        connecttoradio(newChannel)
-        QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
-        cb("ok")
+        local canaccess = connecttoradio(newChannel)
+        if canaccess then QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success") end
+        cb({
+            canaccess = canaccess,
+            channel = newChannel
+        })
     end
 end)
 
