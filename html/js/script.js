@@ -15,7 +15,11 @@ $(function() {
         } else if (data.key == "Enter") { // Enter key
             $.post('https://qb-radio/joinRadio', JSON.stringify({
                 channel: $("#channel").val()
-            }));
+            })).then((data) => {
+                if (data.canacces) {
+                    $("#channel").val(data.channel)
+                }
+            });
         }
     };
 });
@@ -27,7 +31,11 @@ $(document).on('click', '#submit', function(e){
 
     $.post('https://qb-radio/joinRadio', JSON.stringify({
         channel: $("#channel").val()
-    }));
+    })).then((data) => {
+        if (data.canacces) {
+            $("#channel").val(data.channel)
+        }
+    });
 });
 
 $(document).on('click', '#disconnect', function(e){

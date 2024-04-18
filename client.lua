@@ -158,7 +158,11 @@ RegisterNUICallback('joinRadio', function(data, cb)
     if rchannel ~= nil then
         if rchannel <= Config.MaxFrequency and rchannel ~= 0 then
             if rchannel ~= RadioChannel then
-                connecttoradio(rchannel)
+                local canaccess = connecttoradio(rchannel)
+                cb({
+                    canaccess = canaccess,
+                    channel = RadioChannel
+                })
             else
                 QBCore.Functions.Notify(Lang:t('you_on_radio') , 'error')
             end
@@ -168,7 +172,10 @@ RegisterNUICallback('joinRadio', function(data, cb)
     else
         QBCore.Functions.Notify(Lang:t('invalid_radio') , 'error')
     end
-    cb("ok")
+    cb({
+        canaccess = false,
+        channel = RadioChannel
+    })
 end)
 
 RegisterNUICallback('leaveRadio', function(_, cb)
