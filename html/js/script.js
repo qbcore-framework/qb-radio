@@ -41,7 +41,7 @@ $(document).on('click', '#volumeUp', function(e){
 
     $.post('https://qb-radio/volumeUp', JSON.stringify({
         channel: $("#channel").val()
-    }));
+    }))
 });
 
 $(document).on('click', '#volumeDown', function(e){
@@ -57,7 +57,11 @@ $(document).on('click', '#decreaseradiochannel', function(e){
 
     $.post('https://qb-radio/decreaseradiochannel', JSON.stringify({
         channel: $("#channel").val()
-    }));
+    })).then((data) => {
+        if (data.canacces) {
+            $("#channel").val(data.channel)
+        }
+    });
 });
 
 $(document).on('click', '#increaseradiochannel', function(e){
@@ -65,7 +69,11 @@ $(document).on('click', '#increaseradiochannel', function(e){
 
     $.post('https://qb-radio/increaseradiochannel', JSON.stringify({
         channel: $("#channel").val()
-    }));
+    })).then((data) => {
+        if (data.canacces) {
+            $("#channel").val(data.channel)
+        }
+    });
 });
 
 $(document).on('click', '#poweredOff', function(e){
