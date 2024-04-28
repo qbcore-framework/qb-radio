@@ -50,4 +50,4 @@ Config.RestrictedChannels = {
     }
 }
 
-Config.MaxFrequency = 300
+Config.MaxFrequency = 500
