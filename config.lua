@@ -1,5 +1,12 @@
 Config = {}
 
+Config.keyBind = {
+    useRadio = "ENTER",
+    openRadio = "F7",
+    volUp1 = "PAGEUP",
+    radioVolDown = "PAGEDOWN"
+}
+
 Config.RestrictedChannels = {
     [1] = {
         police = true,
@@ -43,4 +50,4 @@ Config.RestrictedChannels = {
     }
 }
 
-Config.MaxFrequency = 500
+Config.MaxFrequency = 300
