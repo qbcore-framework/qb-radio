@@ -152,7 +152,7 @@ end)
 Citizen.CreateThread(function()
     local OpenRadioBind = Config.keyBind.useRadio
     if IsControlPressed(1, keybindControls[OpenRadioBind]) then
-        TriggerClientEvent('qb-radio:use')
+        TriggerEvent('qb-radio:use')
     end
 end)
 
