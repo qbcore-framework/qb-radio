@@ -149,7 +149,7 @@ end)
 RegisterNUICallback('joinRadio', function(data, cb)
     local rchannel = tonumber(data.channel)
     if rchannel ~= nil then
-        if rchannel <= Config.MaxFrequency and rchannel ~= 0 then
+        if rchannel <= Config.MaxFrequency and rchannel > 0 then
             if rchannel ~= RadioChannel then
                 if Config.RestrictedChannels[rchannel] ~= nil then
                     if Config.RestrictedChannels[rchannel][PlayerData.job.name] and PlayerData.job.onduty then
@@ -204,19 +204,46 @@ RegisterNUICallback("volumeDown", function(_, cb)
 end)
 
 RegisterNUICallback("increaseradiochannel", function(_, cb)
-    local newChannel = RadioChannel + 1
-    connecttoradio(newChannel)
-    QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
-    cb("ok")
+    if not onRadio then return end
+    local newChannel = tonumber(RadioChannel + 1)
+    if newChannel <= Config.MaxFrequency then
+        if Config.RestrictedChannels[newChannel] ~= nil then
+            if Config.RestrictedChannels[newChannel][PlayerData.job.name] and PlayerData.job.onduty then
+                connecttoradio(newChannel)
+                QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
+                cb("ok")
+            else
+                QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error')
+            end
+        else
+            connecttoradio(newChannel)
+            QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
+            cb("ok")
+        end
+    else
+        QBCore.Functions.Notify(Lang:t('invalid_radio') , 'error')
+    end
 end)
 
 RegisterNUICallback("decreaseradiochannel", function(_, cb)
     if not onRadio then return end
-    local newChannel = RadioChannel - 1
-    if newChannel >= 1 then
-        connecttoradio(newChannel)
-        QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
-        cb("ok")
+    local newChannel = tonumber(RadioChannel - 1)
+    if newChannel > 0 then
+        if Config.RestrictedChannels[newChannel] ~= nil then
+            if Config.RestrictedChannels[newChannel][PlayerData.job.name] and PlayerData.job.onduty then
+                connecttoradio(newChannel)
+                QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
+                cb("ok")
+            else
+                QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error')
+            end
+        else
+            connecttoradio(newChannel)
+            QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
+            cb("ok")
+        end
+    else
+        QBCore.Functions.Notify(Lang:t('invalid_radio') , 'error')
     end
 end)
 
