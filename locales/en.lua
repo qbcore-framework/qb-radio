@@ -9,7 +9,6 @@ local Translations ={
     ['volume_radio'] = 'New volume %{value}',
     ['decrease_radio_volume'] = 'The radio is already set to maximum volume',
     ['increase_radio_volume'] = 'The radio is already set to the lowest volume',
-    ['increase_decrease_radio_channel'] = 'New channel %{value}',
 }
 
 Lang = Lang or Locale:new({
