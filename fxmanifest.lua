@@ -23,7 +23,7 @@ files {
   'html/ui.html',
   'html/js/script.js',
   'html/css/style.css',
-  'html/img/radio.png'
+  'html/img/radio*.png'
 }
 
 dependency 'pma-voice'
