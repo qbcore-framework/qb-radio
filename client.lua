@@ -29,6 +29,7 @@ local function SplitStr(inputstr, sep)
 end
 
 local function connecttoradio(channel)
+    if channel > Config.MaxFrequency or channel <= 0 then QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error') return false end
     if Config.RestrictedChannels[channel] ~= nil then
         if not Config.RestrictedChannels[channel][PlayerData.job.name] and PlayerData.job.onduty then
             QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error')
@@ -212,7 +213,6 @@ end)
 RegisterNUICallback("increaseradiochannel", function(_, cb)
     local newChannel = RadioChannel + 1
     local canaccess = connecttoradio(newChannel)
-    if canaccess then QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success") end
     cb({
        canaccess = canaccess,
        channel = newChannel
@@ -224,7 +224,6 @@ RegisterNUICallback("decreaseradiochannel", function(_, cb)
     local newChannel = RadioChannel - 1
     if newChannel >= 1 then
         local canaccess = connecttoradio(newChannel)
-        if canaccess then QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success") end
         cb({
             canaccess = canaccess,
             channel = newChannel
