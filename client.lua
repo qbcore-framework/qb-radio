@@ -157,7 +157,7 @@ end)
 RegisterNUICallback('joinRadio', function(data, cb)
     local rchannel = tonumber(data.channel)
     if rchannel ~= nil then
-        if rchannel <= Config.MaxFrequency and rchannel ~= 0 then
+        if rchannel <= Config.MaxFrequency and rchannel > 0 then
             if rchannel ~= RadioChannel then
                 local canaccess = connecttoradio(rchannel)
                 cb({
