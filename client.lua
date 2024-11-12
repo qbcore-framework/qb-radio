@@ -31,7 +31,8 @@ end
 local function connecttoradio(channel)
     if channel > Config.MaxFrequency or channel <= 0 then QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error') return false end
     if Config.RestrictedChannels[channel] ~= nil then
-        if not Config.RestrictedChannels[channel][PlayerData.job.name] and PlayerData.job.onduty then
+        local isJobWhitelisted = Config.RestrictedChannels[channel][PlayerData.job.name]
+        if (not isJobWhitelisted) or (isJobWhitelisted and not PlayerData.job.onduty) then
             QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error')
             return false
         end
