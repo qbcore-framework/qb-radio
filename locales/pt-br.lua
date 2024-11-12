@@ -9,7 +9,6 @@ local Translations = {
     ['volume_radio'] = 'Novo volume %{value}',
     ['decrease_radio_volume'] = 'O rádio já está ajustado para o volume máximo',
     ['increase_radio_volume'] = 'O rádio já está ajustado para o volume mais baixo',
-    ['increase_decrease_radio_channel'] = 'Novo canal %{value}',
 }
 
 if GetConvar('qb_locale', 'en') == 'pt-br' then
