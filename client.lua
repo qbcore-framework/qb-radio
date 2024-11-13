@@ -211,6 +211,7 @@ RegisterNUICallback("volumeDown", function(_, cb)
 end)
 
 RegisterNUICallback("increaseradiochannel", function(_, cb)
+    if not onRadio then return end
     local newChannel = RadioChannel + 1
     local canaccess = connecttoradio(newChannel)
     cb({
