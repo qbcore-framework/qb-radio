@@ -32,7 +32,19 @@ local function SplitStr(inputstr, sep)
     return t
 end
 
+function round(number, decimalPlaces)
+    local multiple = 10^(decimalPlaces or 0)
+    return math.floor(number * multiple + 0.5) / multiple
+  end
+
 local function connecttoradio(channel)
+    if channel > Config.MaxFrequency or channel <= 0 then QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error') return false end
+    if Config.RestrictedChannels[channel] ~= nil then
+        if not Config.RestrictedChannels[channel][PlayerData.job.name] or not PlayerData.job.onduty then
+            QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error')
+            return false
+        end
+    end
     RadioChannel = channel
     if onRadio then
         exports["pma-voice"]:setRadioChannel(0)
@@ -46,6 +58,7 @@ local function connecttoradio(channel)
     else
         QBCore.Functions.Notify(Lang:t('joined_to_radio', {channel = channel .. '.00 MHz'}), 'success')
     end
+    return true
 end
 
 local function closeEvent()
@@ -65,9 +78,9 @@ local function toggleRadioAnimation(pState)
 	LoadAnimDic("cellphone@")
 	if pState then
 		TriggerEvent("attachItemRadio","radio01")
-		TaskPlayAnim(PlayerPedId(), "cellphone@", "cellphone_text_read_base", 2.0, 3.0, -1, 49, 0, 0, 0, 0)
-		radioProp = CreateObject(`prop_cs_hand_radio`, 1.0, 1.0, 1.0, 1, 1, 0)
-		AttachEntityToEntity(radioProp, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 57005), 0.14, 0.01, -0.02, 110.0, 120.0, -15.0, 1, 0, 0, 0, 2, 1)
+		TaskPlayAnim(PlayerPedId(), "cellphone@", "cellphone_text_read_base", 2.0, 3.0, -1, 49, 0, false, false, false)
+		radioProp = CreateObject(`prop_cs_hand_radio`, 1.0, 1.0, 1.0, true, true, false)
+		AttachEntityToEntity(radioProp, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 57005), 0.14, 0.01, -0.02, 110.0, 120.0, -15.0, true, false, false, false, 2, true)
 	else
 		StopAnimTask(PlayerPedId(), "cellphone@", "cellphone_text_read_base", 1.0)
 		ClearPedTasks(PlayerPedId())
@@ -158,19 +171,16 @@ end)
 
 -- NUI
 RegisterNUICallback('joinRadio', function(data, cb)
-    local rchannel = tonumber(data.channel)
+    local rchannel = round(tonumber(data.channel), 2)
     if rchannel ~= nil then
-        if rchannel <= Config.MaxFrequency and rchannel ~= 0 then
+        if rchannel <= Config.MaxFrequency and rchannel > 0 then
             if rchannel ~= RadioChannel then
-                if Config.RestrictedChannels[rchannel] ~= nil then
-                    if Config.RestrictedChannels[rchannel][PlayerData.job.name] and PlayerData.job.onduty then
-                        connecttoradio(rchannel)
-                    else
-                        QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error')
-                    end
-                else
-                    connecttoradio(rchannel)
-                end
+                local canaccess = connecttoradio(rchannel)
+                cb({
+                    canaccess = canaccess,
+                    channel = RadioChannel
+                })
+                return
             else
                 QBCore.Functions.Notify(Lang:t('you_on_radio') , 'error')
             end
@@ -180,7 +190,11 @@ RegisterNUICallback('joinRadio', function(data, cb)
     else
         QBCore.Functions.Notify(Lang:t('invalid_radio') , 'error')
     end
-    cb("ok")
+    cb({
+        canaccess = false,
+        channel = RadioChannel
+    })
+    return
 end)
 
 RegisterNUICallback('leaveRadio', function(_, cb)
@@ -215,20 +229,23 @@ RegisterNUICallback("volumeDown", function(_, cb)
 end)
 
 RegisterNUICallback("increaseradiochannel", function(_, cb)
-    local newChannel = RadioChannel + 1
-    connecttoradio(newChannel)
-    QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
-    cb("ok")
+    if not onRadio then return end
+    local newChannel = round(tonumber(RadioChannel + 1), 2)
+    local canaccess = connecttoradio(newChannel)
+    cb({
+       canaccess = canaccess,
+       channel = newChannel
+    })
 end)
 
 RegisterNUICallback("decreaseradiochannel", function(_, cb)
     if not onRadio then return end
-    local newChannel = RadioChannel - 1
-    if newChannel >= 1 then
-        connecttoradio(newChannel)
-        QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
-        cb("ok")
-    end
+    local newChannel = round(tonumber(RadioChannel - 1), 2)
+    local canaccess = connecttoradio(newChannel)
+    cb({
+        canaccess = canaccess,
+        channel = newChannel
+    })
 end)
 
 RegisterCommand('openradio', function()
