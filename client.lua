@@ -164,6 +164,7 @@ RegisterNUICallback('joinRadio', function(data, cb)
                     canaccess = canaccess,
                     channel = RadioChannel
                 })
+                return
             else
                 QBCore.Functions.Notify(Lang:t('you_on_radio') , 'error')
             end
@@ -177,6 +178,7 @@ RegisterNUICallback('joinRadio', function(data, cb)
         canaccess = false,
         channel = RadioChannel
     })
+    return
 end)
 
 RegisterNUICallback('leaveRadio', function(_, cb)
