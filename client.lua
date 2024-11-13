@@ -230,13 +230,11 @@ end)
 RegisterNUICallback("decreaseradiochannel", function(_, cb)
     if not onRadio then return end
     local newChannel = round(tonumber(RadioChannel - 1), 2)
-    if newChannel > 0 then
-        local canaccess = connecttoradio(newChannel)
-        cb({
-            canaccess = canaccess,
-            channel = newChannel
-        })
-    end
+    local canaccess = connecttoradio(newChannel)
+    cb({
+        canaccess = canaccess,
+        channel = newChannel
+    })
 end)
 
 RegisterNUICallback('poweredOff', function(_, cb)
