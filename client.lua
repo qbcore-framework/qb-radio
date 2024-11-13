@@ -28,6 +28,11 @@ local function SplitStr(inputstr, sep)
     return t
 end
 
+function round(number, decimalPlaces)
+    local multiple = 10^(decimalPlaces or 0)
+    return math.floor(number * multiple + 0.5) / multiple
+  end
+
 local function connecttoradio(channel)
     if channel > Config.MaxFrequency or channel <= 0 then QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error') return false end
     if Config.RestrictedChannels[channel] ~= nil then
@@ -155,7 +160,7 @@ end)
 
 -- NUI
 RegisterNUICallback('joinRadio', function(data, cb)
-    local rchannel = tonumber(data.channel)
+    local rchannel = round(tonumber(data.channel), 2)
     if rchannel ~= nil then
         if rchannel <= Config.MaxFrequency and rchannel > 0 then
             if rchannel ~= RadioChannel then
@@ -214,7 +219,7 @@ end)
 
 RegisterNUICallback("increaseradiochannel", function(_, cb)
     if not onRadio then return end
-    local newChannel = RadioChannel + 1
+    local newChannel = round(tonumber(RadioChannel + 1), 2)
     local canaccess = connecttoradio(newChannel)
     cb({
        canaccess = canaccess,
@@ -224,7 +229,7 @@ end)
 
 RegisterNUICallback("decreaseradiochannel", function(_, cb)
     if not onRadio then return end
-    local newChannel = RadioChannel - 1
+    local newChannel = round(tonumber(RadioChannel - 1), 2)
     if newChannel > 0 then
         local canaccess = connecttoradio(newChannel)
         cb({
