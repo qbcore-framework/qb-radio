@@ -28,6 +28,11 @@ local function SplitStr(inputstr, sep)
     return t
 end
 
+function round(number, decimalPlaces)
+    local multiple = 10^(decimalPlaces or 0)
+    return math.floor(number * multiple + 0.5) / multiple
+  end
+
 local function connecttoradio(channel)
     if channel > Config.MaxFrequency or channel <= 0 then QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error') return false end
     if Config.RestrictedChannels[channel] ~= nil then
@@ -155,7 +160,7 @@ end)
 
 -- NUI
 RegisterNUICallback('joinRadio', function(data, cb)
-    local rchannel = tonumber(data.channel)
+    local rchannel = round(tonumber(data.channel), 2)
     if rchannel ~= nil then
         if rchannel <= Config.MaxFrequency and rchannel > 0 then
             if rchannel ~= RadioChannel then
@@ -164,6 +169,7 @@ RegisterNUICallback('joinRadio', function(data, cb)
                     canaccess = canaccess,
                     channel = RadioChannel
                 })
+                return
             else
                 QBCore.Functions.Notify(Lang:t('you_on_radio') , 'error')
             end
@@ -177,6 +183,7 @@ RegisterNUICallback('joinRadio', function(data, cb)
         canaccess = false,
         channel = RadioChannel
     })
+    return
 end)
 
 RegisterNUICallback('leaveRadio', function(_, cb)
@@ -211,7 +218,8 @@ RegisterNUICallback("volumeDown", function(_, cb)
 end)
 
 RegisterNUICallback("increaseradiochannel", function(_, cb)
-    local newChannel = RadioChannel + 1
+    if not onRadio then return end
+    local newChannel = round(tonumber(RadioChannel + 1), 2)
     local canaccess = connecttoradio(newChannel)
     cb({
        canaccess = canaccess,
@@ -221,14 +229,12 @@ end)
 
 RegisterNUICallback("decreaseradiochannel", function(_, cb)
     if not onRadio then return end
-    local newChannel = RadioChannel - 1
-    if newChannel >= 1 then
-        local canaccess = connecttoradio(newChannel)
-        cb({
-            canaccess = canaccess,
-            channel = newChannel
-        })
-    end
+    local newChannel = round(tonumber(RadioChannel - 1), 2)
+    local canaccess = connecttoradio(newChannel)
+    cb({
+        canaccess = canaccess,
+        channel = newChannel
+    })
 end)
 
 RegisterNUICallback('poweredOff', function(_, cb)
