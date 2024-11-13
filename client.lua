@@ -225,7 +225,7 @@ end)
 RegisterNUICallback("decreaseradiochannel", function(_, cb)
     if not onRadio then return end
     local newChannel = RadioChannel - 1
-    if newChannel >= 1 then
+    if newChannel > 0 then
         local canaccess = connecttoradio(newChannel)
         cb({
             canaccess = canaccess,
