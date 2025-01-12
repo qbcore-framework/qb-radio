@@ -13,5 +13,5 @@ end
 
 QBCore.Functions.CreateCallback("qb-radio::server::hasRadio", function(source, cb)
     local hasItems = exports['qb-inventory']:HasItem(source, "radio", 1)
-    return hasItems
+    cb(hasItems)
 end)
