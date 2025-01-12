@@ -10,3 +10,8 @@ for channel, config in pairs(Config.RestrictedChannels) do
         return config[Player.PlayerData.job.name] and Player.PlayerData.job.onduty
     end)
 end
+
+QBCore.Functions.CreateCallback("qb-radio::server::hasRadio", function(source, cb)
+    local hasItems = exports['qb-inventory']:HasItem(source, "radio", 1)
+    return hasItems
+end)
