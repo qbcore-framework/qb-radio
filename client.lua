@@ -103,17 +103,8 @@ local function IsRadioOn()
     return onRadio
 end
 
-local function DoRadioCheck(PlayerItems)
-    local _hasRadio = false
-
-    for _, item in pairs(PlayerItems) do
-        if item.name == "radio" then
-            _hasRadio = true
-            break;
-        end
-    end
-
-    hasRadio = _hasRadio
+local function DoRadioCheck()
+    return QBCore.Functions.HasItem(Config.RadioItem, 1)
 end
 
 --Exports
@@ -124,12 +115,12 @@ exports("IsRadioOn", IsRadioOn)
 -- Handles state right when the player selects their character and location.
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
-    DoRadioCheck(PlayerData.items)
+    DoRadioCheck()
 end)
 
 -- Resets state on logout, in case of character change.
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-    DoRadioCheck({})
+    DoRadioCheck()
     PlayerData = {}
     leaveradio()
 end)
@@ -137,14 +128,14 @@ end)
 -- Handles state when PlayerData is changed. We're just looking for inventory updates.
 RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
     PlayerData = val
-    DoRadioCheck(PlayerData.items)
+    DoRadioCheck()
 end)
 
 -- Handles state if resource is restarted live.
 AddEventHandler('onResourceStart', function(resource)
     if GetCurrentResourceName() == resource then
         PlayerData = QBCore.Functions.GetPlayerData()
-        DoRadioCheck(PlayerData.items)
+        DoRadioCheck()
     end
 end)
 
