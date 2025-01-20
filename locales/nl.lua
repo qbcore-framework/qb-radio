@@ -1,5 +1,5 @@
 local Translations ={
-    ["not_on_radio"] = "Je bent niet verbonden met een signaal",
+    ["not_on_radio"] = "Je bent niet verbonden met een kanaal",
     ["joined_to_radio"] = "Je bent verbonden met: %{channel}",
     ["restricted_channel_error"] = "Je kunt niet verbinden met dit signaal!",
     ["invalid_radio"] = "Deze frequentie is niet beschikbaar.",
