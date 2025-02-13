@@ -1,5 +1,7 @@
 Config = {}
 
+Config.RadioItem = 'radio'
+
 Config.RestrictedChannels = {
     [1] = {
         police = true,
